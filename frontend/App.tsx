@@ -1,15 +1,18 @@
-import React from 'react';
-import { View } from 'react-native';
-import { NativeRouter, Route, Link } from "react-router-native";
+import { StyleSheet, Text, View } from 'react-native';
 
-function App(): JSX.Element {
+export default function App() {
   return (
-    <NativeRouter>
-      <View>
-        
-      </View>
-    </NativeRouter>
+    <View style={styles.container}>
+      <Text>Open up App.tsx to start working on your app!</Text>
+    </View>
   );
 }
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
