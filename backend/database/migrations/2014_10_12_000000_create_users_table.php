@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('birthday')->nullable();
             $table->string('description')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('register_date');
+            $table->boolean('is_active');
             $table->string('last_logined_at')->nullable();
             $table->string('remember_verify_code');
             $table->rememberToken();
