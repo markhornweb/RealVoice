@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('commenting_status');
             $table->string('bgm');
             $table->string('full_voice');
-            $table->string('voice_text');
+            $table->text('voice_text');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
             $table->timestamps();
