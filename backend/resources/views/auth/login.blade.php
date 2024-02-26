@@ -44,6 +44,12 @@
 							@enderror
 						</div>
 						<div class="mb-3">
+							<div class="form-check">
+								<input class="form-check-input" name="remember" type="checkbox" id="remember-me">
+								<label class="form-check-label" for="remember-me">ログイン状態を保存する</label>
+							</div>
+						</div>
+						<div class="mb-3">
 							<button class="btn btn-primary d-grid w-100" type="submit">ログイン</button>
 						</div>
 					</form>
