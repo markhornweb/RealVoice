@@ -49,36 +49,22 @@
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/cards-advance.css') }}" />
 
+    <!-- Helpers -->
+    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
 
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/i18n/i18n.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/typeahead-js/typeahead.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
-
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
     
 </head>
 
 <body>
-  
     <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar ">
+    <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
 
             <!-- Menu -->
@@ -92,7 +78,7 @@
                 <div class="menu-inner-shadow"></div>
                 
                 <ul class="py-1 menu-inner">
-                    <li class="menu-item active">
+                    <li class="menu-item{{ Request::is('home') ? ' active' : '' }}">
                         <a href="{{ route('home') }}" class="menu-link">
                             <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon icon icon-tabler icon-tabler-dashboard" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -136,8 +122,8 @@
                             <div data-i18n="カテゴリー管理">カテゴリー管理</div>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        <a href="app-kanban.html" class="menu-link">
+                    <li class="menu-item{{ Request::is('users') ? ' active' : '' }}">
+                        <a href="{{ route('users.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ti ti-users"></i>
                             <div data-i18n="ユーザー管理">ユーザー管理</div>
                         </a>
@@ -163,8 +149,7 @@
                         <div class="navbar-nav align-items-center">
                             <div class="mb-0 nav-item navbar-search-wrapper">
                                 <a class="px-0 nav-item nav-link search-toggler d-flex align-items-center" href="javascript:void(0);">
-                                    <i class="ti ti-search ti-md me-2"></i>
-                                    <span class="d-none d-md-inline-block text-muted">Search (Ctrl+/)</span>
+                                    <img src="{{ asset('assets/img/favicon/logo.png') }}" class="col-3">
                                 </a>
                             </div>
                         </div>
@@ -398,7 +383,32 @@
                 <!-- / Navbar -->
       
                 <!-- Content wrapper -->
-                @yield('content')
+                <div class="content-wrapper">
+
+                    @yield('content')
+                
+                    <!-- Footer -->
+                    <footer class="content-footer footer bg-footer-theme">
+                        <div class="container-xxl">
+                            <div class="py-2 footer-container d-flex align-items-center justify-content-between flex-md-row flex-column">
+                                <div>
+                                    © 
+                                    <script>
+                                        document.write(new Date().getFullYear())
+                                    </script> All Rights Reserved.
+                                </div>
+                                <div class="d-none d-lg-inline-block">
+                                    <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank">License</a>
+                                    <a href="https://1.envato.market/pixinvent_portfolio" target="_blank" class="footer-link me-4">More Themes</a>
+                                    <a href="https://demos.pixinvent.com/vuexy-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
+                                    <a href="https://pixinvent.ticksy.com/" target="_blank" class="footer-link d-none d-sm-inline-block">Support</a>            
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- / Footer -->
+                    <div class="content-backdrop fade"></div>
+                </div>
                 <!-- Content wrapper -->
             </div>
             <!-- / Layout page -->
@@ -413,9 +423,29 @@
 
     </div>
     <!-- / Layout wrapper -->
-  
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/i18n/i18n.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/typeahead-js/typeahead.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js') }}"></script>
+
+    <!-- Main JS -->
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <!-- Page JS -->
+    <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
 </body>
 
 </html>
-
-<!-- beautify ignore:end -->
