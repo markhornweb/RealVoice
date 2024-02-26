@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Http\Middleware\VerifyJwtToken;
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::post('/register', [App\Http\Controllers\Api\AuthController::class, 'register'])->name('api.register');
+Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login'])->name('api.login');
+
+Route::middleware([VerifyJwtToken::class])->group(function () {
+    Route::post('/verify4code', [App\Http\Controllers\Api\AuthController::class, 'verifyCode']);
+    Route::post('/profileUpdate', [App\Http\Controllers\Api\UserController::class, 'update']);
 });
