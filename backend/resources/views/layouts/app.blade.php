@@ -89,14 +89,14 @@
                             <div data-i18n="ダッシュボード">ダッシュボード</div>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        <a href="app-chat.html" class="menu-link">
+                    <li class="menu-item{{ Request::is('notices') ? ' active' : '' }}">
+                        <a href="{{ route('notices.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ti ti-bell"></i>
                             <div data-i18n="通知管理">通知管理</div>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        <a href="app-kanban.html" class="menu-link">
+                    <li class="menu-item{{ Request::is('posts') ? ' active' : '' }}">
+                        <a href="{{ route('posts.index') }}" class="menu-link">
                             <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon icon icon-tabler icon-tabler-photo-scan" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M15 8h.01" />
@@ -110,8 +110,8 @@
                             <div data-i18n="ポスト管理">ポスト管理</div>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        <a href="app-calendar.html" class="menu-link">
+                    <li class="menu-item{{ Request::is('categories') ? ' active' : '' }}">
+                        <a href="{{ route('categories.index') }}" class="menu-link">
                             <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon icon icon-tabler icon-tabler-category" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M4 4h6v6h-6z" />

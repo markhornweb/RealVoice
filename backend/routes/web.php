@@ -24,4 +24,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/userStatisticsCard', [App\Http\Controllers\HomeController::class, 'userStatisticsCard'])->name('userStatisticsCard');
 Route::get('/userStatisticsChart', [App\Http\Controllers\HomeController::class, 'userStatisticsChart'])->name('userStatisticsChart');
 
-Route::resource('users', App\Http\Controllers\UserController::class);
+Route::resource('users', App\Http\Controllers\UserController::class)->middleware(['auth']);
+
+Route::resource('notices', App\Http\Controllers\NoticeController::class)->middleware(['auth']);
+
+Route::resource('posts', App\Http\Controllers\NoticeController::class)->middleware(['auth']);
+
+Route::resource('categories', App\Http\Controllers\NoticeController::class)->middleware(['auth']);
