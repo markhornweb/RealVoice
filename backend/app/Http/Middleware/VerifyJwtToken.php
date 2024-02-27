@@ -24,7 +24,7 @@ class VerifyJwtToken
         $token = $request->header('Authorization');
 
         if (!$token) {
-            return response()->json(['error' => 'Token not provided'], 401);
+            return response()->json(['error' => 'トークンが提供されていない。', 'status' => 401]);
         }
 
         try {
@@ -33,12 +33,12 @@ class VerifyJwtToken
             $user = User::find($decoded->user_id);
 
             if (!$user) {
-                return response()->json(['error' => 'User not found'], 404);
+                return response()->json(['error' => 'ユーザーが見つかりません。', 'status' => 404]);
             }
 
             $request->user = $user;
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Invalid token'], 401);
+            return response()->json(['error' => '無効なトークンです。', 'status' => 401]);
         }
 
         return $next($request);

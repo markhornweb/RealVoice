@@ -36,6 +36,20 @@ return [
             'throw' => false,
         ],
 
+        'thumbnails' => [
+            'driver' => 'local',
+            'root' => storage_path('app'),
+            'url' => env('APP_URL').'/storage/thumbnails',
+            'visibility' => 'public',
+        ],
+
+        'downloadable_videos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/downloadable_videos'),
+            'url' => env('APP_URL').'/storage/downloadable_videos',
+            'visibility' => 'public',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

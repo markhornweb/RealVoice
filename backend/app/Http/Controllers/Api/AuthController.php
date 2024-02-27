@@ -101,7 +101,7 @@ class AuthController extends Controller
         }
 
         $user->remember_verify_code = "";
-        $user->code_verified_at = now();
+        $user->email_verified_at = now();
         $user->is_active = 1;
         $user->save();
 
