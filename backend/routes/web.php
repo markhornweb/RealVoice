@@ -31,3 +31,15 @@ Route::resource('notices', App\Http\Controllers\NoticeController::class)->middle
 Route::resource('posts', App\Http\Controllers\NoticeController::class)->middleware(['auth']);
 
 Route::resource('categories', App\Http\Controllers\NoticeController::class)->middleware(['auth']);
+
+Route::get('/videos/{filename}', function ($filename) {
+    $path = storage_path("app/videos/{$filename}");
+    if (!File::exists($path)) {
+        abort(404);
+    }
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+    return $response;
+});

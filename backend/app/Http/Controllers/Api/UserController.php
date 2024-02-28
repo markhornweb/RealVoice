@@ -21,7 +21,7 @@ class UserController extends Controller
             'confirm_password' => $request->filled('new_password') ? 'required|string|same:new_password' : 'nullable|string',
             'birthday' => 'nullable|date',
             'description' => 'nullable|string',
-            'phone_number' => 'nullable|string',
+            'phone_number' => ['nullable', 'string', 'regex:/^0\d{2}-\d{3,4}-\d{4}$/'],
         ]);
 
         if ($validator->fails()) {
@@ -109,6 +109,70 @@ class UserController extends Controller
                 'message' => '認証コードは正常に送信されました。',
                 'status' => 200
             ]);
+        }
+    }
+
+    public function profileEmailUpdate(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'verification_code' => 'required|string|min:4|max:4',
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->first(),
+                'status' => Response::HTTP_BAD_REQUEST,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $request->user;
+
+        if ($user->remember_verify_code === $request->verification_code) {
+            $user->email = $request->email;
+            $user->remember_verify_code = "";
+            $user->save();
+
+            return response()->json([
+                'message' => 'メールが正確に更新されました。',
+                'status' => Response::HTTP_OK,
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'error' => '確認コードが正しくありません。',
+                'status' => Response::HTTP_UNAUTHORIZED,
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
+    public function profilePhoneUpdate(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'verification_code' => 'required|string|min:4|max:4',
+            'phone_number' => ['required', 'string', 'regex:/^0\d{2}-\d{3,4}-\d{4}$/'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->first(),
+                'status' => Response::HTTP_BAD_REQUEST,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $request->user;
+
+        if ($user->remember_verify_code === $request->verification_code) {
+            $user->phone_number = $request->phone_number;
+            $user->remember_verify_code = "";
+            $user->save();
+
+            return response()->json([
+                'message' => '電話番号が正確に更新されました。',
+                'status' => Response::HTTP_OK,
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'error' => '確認コードが正しくありません。',
+                'status' => Response::HTTP_UNAUTHORIZED,
+            ], Response::HTTP_UNAUTHORIZED);
         }
     }
 }
