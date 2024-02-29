@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
@@ -103,9 +104,69 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'id' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+                'status' => Response::HTTP_BAD_REQUEST,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $post_id = $request->id;
+        $post = Post::with(['comments.user', 'comments.replies.user'])->findOrFail($post_id);
+
+        $formattedPost = $this->formatPost($post);
+
+        return response()->json(['data' => $formattedPost, 'status' => 201]);
+    }
+
+    private function formatPost($post)
+    {
+        return [
+            'id' => $post->id,
+            'title' => $post->title,
+            'thumbnail' => $post->thumbnail,
+            'commenting_status' => $post->commenting_status,
+            'bgm' => $post->bgm,
+            'voice' => $post->voice,
+            'voice_text' => $post->voice_text,
+            'video' => $post->video,
+            'category_id' => $post->category_id,
+            'user_id' => $post->user_id,
+            'created_at' => $post->created_at,
+            'updated_at' => $post->updated_at,
+            'comments' => $this->formatComments($post->comments),
+        ];
+    }
+
+    private function formatComments($comments)
+    {
+        $formattedComments = [];
+
+        foreach ($comments as $comment) {
+            $formattedComments[] = $this->formatComment($comment);
+        }
+
+        return $formattedComments;
+    }
+
+    private function formatComment($comment)
+    {
+        return [
+            'id' => $comment->id,
+            'content' => $comment->content,
+            'parent_post_id' => $comment->parent_post_id,
+            'parent_comment_id' => $comment->parent_comment_id,
+            'user' => $comment->user,
+            'created_at' => $comment->created_at,
+            'updated_at' => $comment->updated_at,
+            'replies' => $this->formatComments($comment->replies),
+        ];
     }
 
     /**
@@ -130,5 +191,38 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function search(Request $request)
+    {
+        $userId = $request->user_id;
+        $categoryId = $request->category_id;
+        $q = $request->q;
+
+        $query = Post::query();
+
+        if ($userId) {
+            $query->where('user_id', $userId);
+        }
+
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+
+        if ($q) {
+            $query->where(function ($innerQuery) use ($q) {
+                $innerQuery->where('title', 'like', "%$q%")
+                            ->orWhere('voice_text', 'like', "%$q%");
+            });
+        }
+
+        $query->with(['user', 'category']);
+
+        $posts = $query->get();
+
+        return response()->json(['posts' => $posts, 'status' => '201']);
     }
 }
