@@ -33,4 +33,6 @@ Route::middleware([VerifyJwtToken::class])->group(function () {
     Route::post('/profilePhoneUpdate', [App\Http\Controllers\Api\UserController::class, 'profilePhoneUpdate']);
     Route::get('/category/index', [App\Http\Controllers\Api\CategoryController::class, 'index']);
     Route::post('/post/store', [App\Http\Controllers\Api\PostController::class, 'store']);
+    Route::get('/post/search', [App\Http\Controllers\Api\PostController::class, 'search']);
+    Route::get('/post/show', [App\Http\Controllers\Api\PostController::class, 'show']);
 });
